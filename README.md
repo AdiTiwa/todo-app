@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Project Idea
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I'm learning React.js, and making a project simultaneously, nearly blind, what could go wrong! The project is meant to be a pleasant looking Todo-App built with React. My only Learning Experience came from a [tutorial/overview of react from Tania Rascia](https://www.taniarascia.com/getting-started-with-react/). This project can be run by first cloning it into its own directory by using `git clone https://github.com/AdiTiwa/todo-app.git` and then changing your directory into the right directory `cd todo-app`. Then, with Node.js's npm, run `npm start`. For all details on running code, written by Facebook itself, scroll down a bit.
 
 ## Available Scripts
 
