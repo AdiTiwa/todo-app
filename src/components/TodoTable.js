@@ -16,11 +16,11 @@ const TableBody = props => {
     const rows = props.todoList.map((row, index) => {
         return (
             <tr key={index}>
-                <td><input type = "checkbox" checked = {row.done}/></td>
+                <td><input type = "checkbox" /></td>
                 <td>{row.name}</td>
                 <td><button onClick={() => props.removeTodo(index)}>Delete</button></td>
             </tr>
-        );
+        )
     });
     
     return <tbody>{rows}</tbody>
@@ -30,8 +30,8 @@ const TodoTable = (props) => {
     const { todos, removeTodo } = props
 
     return (
-        <div>
-            <table>
+        <div className = "column is-10">
+            <table className = "centered-table">
                 <TableHeader />
                 <TableBody todoList = {todos} removeTodo = {removeTodo} />
             </table>

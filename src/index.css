@@ -1,14 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Recursive:wght@400;800&display=swap');
+@import 'bulma/css/bulma.css';
 
-:root{
-
+.entry {
+    height: 7.5rem;
 }
 
-.title .titleBar{
-    font: 'Recursive', Roboto;
-    font-size: large;
+.title {
+    font-family: 'Recursive';
+    text-align: center;
 }
 
-.titleBar {
-    font-size: medium;
-}
