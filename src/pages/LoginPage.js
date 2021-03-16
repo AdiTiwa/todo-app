@@ -38,6 +38,19 @@ const RegisterGUI = props => {
     )
 }
 
+function OtherLogins(firebase, auth) {
+    const signInWithGoogle = () => {
+        const provider = new firebase.auth.GoogleAuthProvider()
+        auth.signInWithPopup(provider);
+    }
+
+    return (
+        <div className = "container columns">
+            <button onClick = {signInWithGoogle}>Google</button>
+        </div>
+    )
+}
+
 class LoginPage extends Component {
     state = {
         'loginUser': '',
@@ -57,9 +70,12 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <div className = "container columns">
-                <LoginGUI />
-                <RegisterGUI />
+            <div className = "container">
+                <div className = "columns">
+                    <LoginGUI handleChange = {this.handleChange}/>
+                    <RegisterGUI handleChange = {this.handleChange}/>
+                </div>
+                <OtherLogins />
             </div>
         )
     }

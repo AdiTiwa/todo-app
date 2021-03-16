@@ -1,29 +1,42 @@
+/* eslint-disable no-unused-vars */
+// Module Imports
 import React, { Component } from 'react'
+import ReactDOMServer from 'react-dom/server'
+
+import firebase from 'firebase'
+import 'firebase/firestore'
+import 'firebase/auth'
+
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+
+// Custom Imports
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import './base-template.css'
 import 'react-bulma-components/dist/react-bulma-components.min.css'
 import './index.css'
 
-const Imports = () => {
-    return (
-        <div>
-            <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-            <script src="/__/firebase/8.3.0/firebase-app.js"></script>
-            <script src="/__/firebase/init.js"></script>
-        </div>
-    )
+// firebase
+if (firebase.apps.length === 0) {
+    firebase.initializeApp({
+        apiKey: "AIzaSyClnNTL2286DRY2XRguc9pADDgYpgPieXE",
+        authDomain: "react-todo-app-9ccdf.firebaseapp.com",
+        projectId: "react-todo-app-9ccdf",
+        storageBucket: "react-todo-app-9ccdf.appspot.com",
+        messagingSenderId: "187640269202",
+        appId: "1:187640269202:web:0525e347415ae1665a594b"
+    });
 }
 
-class App extends Component {
+const auth = firebase.auth();
+const firestore = firebase.firestore()
+
+class App extends Component{
     state = {
-        todoItems: [
-            {
-                done: false,
-                name: "Do Homework"
-            }
-        ],
-        currentPage: 1
+        todoItems: [],
+        currentPage: 0,
+        loggedIn: false
     }
 
     removeTodoObject = (index) => {
@@ -44,19 +57,44 @@ class App extends Component {
         })
     }
 
-    render(){
-        const { currentPage } = this.state
-        let page;
-        if (currentPage === 0) {
-            page = <HomePage todos = {this.state.todoItems} removeTodo={this.removeTodoObject} handleAddTodo={this.handleAddTodo} />
-        } else if (currentPage === 1) {
-            page = <LoginPage />
-        }
+    
 
+    changePage = (index) => {
+        this.setState({
+            todoItems: [...this.state.todoItems],
+            currentPage: index
+        })
+    }
+
+    sendLoginNotification = (notificationObject) => {
+        const userDisplayName = auth.currentUser.displayName;
+
+        notificationObject = <div>
+                <div class="notification is-success is-light">
+                    <button class="delete"></button>
+                    Don't fear <strong>{userDisplayName}</strong>! You were logged in successfully!
+                </div>
+        </div>;
+    }
+
+    render() {
+        let notification
+
+        const isLoggedIn = auth.currentUser();
+        const { currentPage } = this.state
+        let page
+        if (currentPage === 0) {
+            page = <HomePage todos = {this.state.todoItems} removeTodo={this.removeTodoObject} handleAddTodo={this.handleAddTodo} changePage = {this.changePage} />
+        } else if (currentPage === 1 && !isLoggedIn) {
+            page = <LoginPage changePage = {this.changePage}/>
+        } else if (currentPage === 1 && isLoggedIn) {
+            page = <HomePage todos = {this.state.todoItems} removeTodo={this.removeTodoObject} handleAddTodo={this.handleAddTodo} changePage = {this.changePage} />
+            this.changePage(0)
+            
+        }
 
         return(
             <div>
-                <Imports />
                 { page }
             </div>
         )
