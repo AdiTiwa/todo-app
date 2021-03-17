@@ -57,8 +57,6 @@ class App extends Component{
         })
     }
 
-    
-
     changePage = (index) => {
         this.setState({
             todoItems: [...this.state.todoItems],
@@ -66,35 +64,38 @@ class App extends Component{
         })
     }
 
-    sendLoginNotification = (notificationObject) => {
+    sendLoginNotification = () => {
         const userDisplayName = auth.currentUser.displayName;
 
-        notificationObject = <div>
+        const notificationObject = <div>
                 <div class="notification is-success is-light">
                     <button class="delete"></button>
                     Don't fear <strong>{userDisplayName}</strong>! You were logged in successfully!
                 </div>
         </div>;
+
+        return notificationObject
     }
 
     render() {
         let notification
 
-        const isLoggedIn = auth.currentUser();
+        const isLoggedIn = firebase.auth().currentUser !== null;
         const { currentPage } = this.state
         let page
         if (currentPage === 0) {
             page = <HomePage todos = {this.state.todoItems} removeTodo={this.removeTodoObject} handleAddTodo={this.handleAddTodo} changePage = {this.changePage} />
         } else if (currentPage === 1 && !isLoggedIn) {
-            page = <LoginPage changePage = {this.changePage}/>
+            page = <LoginPage changePage = {this.changePage} auth = {auth}/>
         } else if (currentPage === 1 && isLoggedIn) {
-            page = <HomePage todos = {this.state.todoItems} removeTodo={this.removeTodoObject} handleAddTodo={this.handleAddTodo} changePage = {this.changePage} />
+            page = <HomePage todos = {this.state.todoItems} removeTodo={this.removeTodoObject} handleAddTodo={this.handleAddTodo} changePage = {this.changePage} currentPage={isLoggedIn} />
             this.changePage(0)
-            
+            notification = this.sendLoginNotification()
         }
 
         return(
             <div>
+                { notification }
                 { page }
             </div>
         )

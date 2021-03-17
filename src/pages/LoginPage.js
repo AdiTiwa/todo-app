@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import firebase from 'firebase/app'
 
 const LoginGUI = props => {
     return (
@@ -38,10 +39,12 @@ const RegisterGUI = props => {
     )
 }
 
-function OtherLogins(firebase, auth) {
+const OtherLogins = props => {
     const signInWithGoogle = () => {
         const provider = new firebase.auth.GoogleAuthProvider()
-        auth.signInWithPopup(provider);
+        firebase.auth().signInWithPopup(provider);
+
+        this.props.changePage(0)
     }
 
     return (
@@ -52,6 +55,7 @@ function OtherLogins(firebase, auth) {
 }
 
 class LoginPage extends Component {
+
     state = {
         'loginUser': '',
         'loginPass': '',
@@ -69,13 +73,15 @@ class LoginPage extends Component {
     }
 
     render() {
+        const { auth, changePage } = this.props;
+
         return (
-            <div className = "container">
+            <div className = "centered-container">
                 <div className = "columns">
-                    <LoginGUI handleChange = {this.handleChange}/>
-                    <RegisterGUI handleChange = {this.handleChange}/>
+                    <LoginGUI handleChange = {this.handleChange} changePage = { changePage }/>
+                    <RegisterGUI handleChange = {this.handleChange} changePage = { changePage }/>
                 </div>
-                <OtherLogins />
+                <OtherLogins auth = {auth} changePage = { changePage }/>
             </div>
         )
     }

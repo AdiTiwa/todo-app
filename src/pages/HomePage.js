@@ -12,7 +12,7 @@ const HomePage = props => {
                 <TodoTable todos = {todos} removeTodo = {removeTodo}/>
                 <AddTodo handleSubmit = {handleAddTodo}/>
             </div>
-            <p className = "is-6">To Save Todos: <button className = "is-success is-6" onClick = {changePage} >Login/Signup</button></p>
+            <p className = "is-6">To Save Todos: <button className = "is-success is-6" onClick = {changePage(1)} >Login/Signup</button></p>
         </div>
     )
 }
